@@ -1,0 +1,5 @@
+.container {
+    height: 156px;
+    width: 100%;
+    background-color: var(--search-grey);
+}
