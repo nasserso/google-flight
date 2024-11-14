@@ -4,5 +4,11 @@
   padding: 2rem;
   text-align: center;
 
-  --search-grey: #36373a;
+  --search-component: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  #root {
+    --search-component: #36373a;
+  }
 }

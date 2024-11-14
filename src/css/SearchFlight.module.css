@@ -1,5 +1,24 @@
 .container {
     height: 156px;
     width: 100%;
-    background-color: var(--search-grey);
+    background-color: var(--search-component);
+}
+
+.passengerItemContainer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--search-component);
+    width: 200px;
+    height: 50px;
+}
+
+.passengerItemTextContainer {
+    width: 30%;
+}
+
+.passengerItemBtn {
+    width: 20px !important;
+    min-width: 30px !important;
+    height: 30px !important;
 }
