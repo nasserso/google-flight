@@ -108,45 +108,60 @@ function SearchFlight() {
         )
     }
 
+    const PassengerChoices = () => {
+        return (
+            <div>
+                <FormControl>
+                    <Select
+                        labelId="trip-select"
+                        id="trip-select"
+                        value={tripType}
+                        onChange={(e) => setTripType(e.target.value as TripType)}
+                    >
+                        <MenuItem value={"round_trip"}>Round trip</MenuItem>
+                        <MenuItem value={"one_way"}>One way</MenuItem>
+                        <MenuItem value={"multi_city"}>Multi-city</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControl>
+                    <InputLabel id="passenger-select">{countPassengers()}</InputLabel>
+                    <Select
+                        labelId="passenger-select"
+                        id="passenger-select"
+                    >
+                        <PassengengerItemChoice type="adults" />
+                        <PassengengerItemChoice type="children" />
+                        <PassengengerItemChoice type="infants_seat" />
+                        <PassengengerItemChoice type="infants_lap" />
+                    </Select>
+                </FormControl>
+                <FormControl>
+                    <Select
+                        labelId="seat-class-select"
+                        id="seat-class-select"
+                        value={seatClass}
+                        onChange={(e) => setSeatClass(e.target.value as SeatClassType)}
+                    >
+                        <MenuItem value={"economy"}>Economy</MenuItem>
+                        <MenuItem value={"premium_economy"}>Premium Economy</MenuItem>
+                        <MenuItem value={"business"}>Business</MenuItem>
+                        <MenuItem value={"first"}>First</MenuItem>
+                    </Select>
+                </FormControl>
+            </div>
+        )
+    }
+
     return (
         <div className={styles.container}>
-            <FormControl>
-                <Select
-                    labelId="trip-select"
-                    id="trip-select"
-                    value={tripType}
-                    onChange={(e) => setTripType(e.target.value as TripType)}
-                >
-                    <MenuItem value={"round_trip"}>Round trip</MenuItem>
-                    <MenuItem value={"one_way"}>One way</MenuItem>
-                    <MenuItem value={"multi_city"}>Multi-city</MenuItem>
-                </Select>
-            </FormControl>
-            <FormControl>
-                <InputLabel id="passenger-select">{countPassengers()}</InputLabel>
-                <Select
-                    labelId="passenger-select"
-                    id="passenger-select"
-                >
-                    <PassengengerItemChoice type="adults" />
-                    <PassengengerItemChoice type="children" />
-                    <PassengengerItemChoice type="infants_seat" />
-                    <PassengengerItemChoice type="infants_lap" />
-                </Select>
-            </FormControl>
-            <FormControl>
-                <Select
-                    labelId="seat-class-select"
-                    id="seat-class-select"
-                    value={seatClass}
-                    onChange={(e) => setSeatClass(e.target.value as SeatClassType)}
-                >
-                    <MenuItem value={"economy"}>Economy</MenuItem>
-                    <MenuItem value={"premium_economy"}>Premium Economy</MenuItem>
-                    <MenuItem value={"business"}>Business</MenuItem>
-                    <MenuItem value={"first"}>First</MenuItem>
-                </Select>
-            </FormControl>
+            <PassengerChoices />
+            <div>
+                <input type="text" placeholder="from" />
+                <input type="text" placeholder="to" />
+                <input type="text" placeholder="departure" />
+                <input type="text" placeholder="return" />
+            </div>
+            <button>Explore</button>
         </div>
     )
 }
