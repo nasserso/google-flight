@@ -1,35 +1,15 @@
-import { Button, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material"
 import styles from "../css/SearchFlight.module.css"
-import { useState } from "react";
-
-type TripType = (
-    "round_trip" |
-    "one_way" |
-    "multi_city"
-);
-
-type SeatClassType = (
-    "economy" |
-    "premium_economy" |
-    "business" |
-    "first"
-);
-
-type PassengersType = (
-    "adults" |
-    "children" |
-    "infants_seat" |
-    "infants_lap"
-);
-
-type PassengersCountType = (
-    {
-        "adults": number,
-        "children": number,
-        "infants_seat": number,
-        "infants_lap": number
-    }
-);
+import { useEffect, useState } from "react";
+import { flightApi } from "../api/api";
+import PassengerChoices from "./PassengerChoices";
+import { PassengersCountType, SeatClassType, TripType } from "../types/PassengerChoices";
+import { ILocation } from "../types/location";
+import { useDebounce } from "../hooks/useDebounce";
+import AutocompleteSearch from "./AutoCompleteSearch";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 
 function SearchFlight() {
     const [tripType, setTripType] = useState<TripType>("round_trip");
@@ -40,128 +20,84 @@ function SearchFlight() {
         "infants_seat": 0,
         "infants_lap": 0
     });
+    const [userLocation, setUserLocation] = useState<ILocation>();
+    const [userDestination, setUserDestination] = useState<ILocation>();
 
-    const countPassengers = () => {
-        return Object.keys(passengers).reduce(
-            (acc, key) => acc + passengers[key as PassengersType], 0
-        );
-    }
+    const [airPortsFrom, setAirPortsFrom] = useState<ILocation[]>([]);
+    const [airPortsTo, setAirPortsTo] = useState<ILocation[]>([]);
 
-    const canReducePassengerCount = (type: PassengersType) => {
-        return passengers[type] - 1 >= (type === "adults" ? 1 : 0);
-    }
+    const [searchTextTo, setSearchTextTo] = useState<string>("");
+    const [searchTextFrom, setSearchTextFrom] = useState<string>("");
 
-    const canAddPassengerCount = (type: PassengersType) => {
-        return passengers[type] + 1 <= 9;
-    }
+    const [loadingFrom, setLoadingFrom] = useState<boolean>(false);
+    const [loadingTo, setLoadingTo] = useState<boolean>(false);
 
-    const updatePassenger = (type: PassengersType, value: number) => {
-        setPassengers((passengers) => {
-            return { ...passengers, [type]: passengers[type] + value }
+    const searchDebounceTo = useDebounce(searchTextTo, 1000);
+    const searchDebounceFrom = useDebounce(searchTextFrom, 1000);
+
+    const getAirPort = async (
+        search: string,
+        setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+        setAirPorts: React.Dispatch<React.SetStateAction<ILocation[]>>,
+    ) => {
+        setLoading(true);
+        try {
+            const response = await flightApi.searchAirport(search);
+            setAirPorts(response.data.data || []);
+        } finally {
+            setLoading(false);
         }
-        );
     }
 
-    const getPassengerText = (type: PassengersType) => {
-        return {
-            "adults": "Adults",
-            "children": "Children",
-            "infants_seat": "Infants",
-            "infants_lap": "Infants",
-        }[type]
-    }
+    useEffect(() => {
+        if (searchDebounceFrom.length > 0) {
+            getAirPort(searchDebounceFrom, setLoadingFrom, (e) => setAirPortsFrom(e));
+        }
+    }, [searchDebounceFrom])
 
-    const getPassengerSubText = (type: PassengersType) => {
-        return {
-            "adults": "",
-            "children": "Aged 2-11",
-            "infants_seat": "In seat",
-            "infants_lap": "On lap",
-        }[type]
-    }
-
-    const PassengengerItemChoice = ({ type }: { type: PassengersType }) => {
-        return (
-            <div className={styles.passengerItemContainer}>
-                <div className={styles.passengerItemTextContainer}>
-                    <Typography>{getPassengerText(type)}</Typography>
-                    <Typography variant="caption">{getPassengerSubText(type)}</Typography>
-                </div>
-                <Button
-                    onClick={() => updatePassenger(type, -1)}
-                    disabled={!canReducePassengerCount(type)}
-                    variant="contained"
-                    className={styles.passengerItemBtn}
-                >
-                    -
-                </Button>
-                {passengers[type]}
-                <Button
-                    onClick={() => updatePassenger(type, 1)}
-                    disabled={!canAddPassengerCount(type)}
-                    variant="contained"
-                    className={styles.passengerItemBtn}
-                >
-                    +
-                </Button>
-            </div >
-        )
-    }
-
-    const PassengerChoices = () => {
-        return (
-            <div>
-                <FormControl>
-                    <Select
-                        labelId="trip-select"
-                        id="trip-select"
-                        value={tripType}
-                        onChange={(e) => setTripType(e.target.value as TripType)}
-                    >
-                        <MenuItem value={"round_trip"}>Round trip</MenuItem>
-                        <MenuItem value={"one_way"}>One way</MenuItem>
-                        <MenuItem value={"multi_city"}>Multi-city</MenuItem>
-                    </Select>
-                </FormControl>
-                <FormControl>
-                    <InputLabel id="passenger-select">{countPassengers()}</InputLabel>
-                    <Select
-                        labelId="passenger-select"
-                        id="passenger-select"
-                    >
-                        <PassengengerItemChoice type="adults" />
-                        <PassengengerItemChoice type="children" />
-                        <PassengengerItemChoice type="infants_seat" />
-                        <PassengengerItemChoice type="infants_lap" />
-                    </Select>
-                </FormControl>
-                <FormControl>
-                    <Select
-                        labelId="seat-class-select"
-                        id="seat-class-select"
-                        value={seatClass}
-                        onChange={(e) => setSeatClass(e.target.value as SeatClassType)}
-                    >
-                        <MenuItem value={"economy"}>Economy</MenuItem>
-                        <MenuItem value={"premium_economy"}>Premium Economy</MenuItem>
-                        <MenuItem value={"business"}>Business</MenuItem>
-                        <MenuItem value={"first"}>First</MenuItem>
-                    </Select>
-                </FormControl>
-            </div>
-        )
-    }
+    useEffect(() => {
+        if (searchDebounceTo.length > 0) {
+            getAirPort(searchDebounceTo, setLoadingTo, (e) => setAirPortsTo(e));
+        }
+    }, [searchDebounceTo])
 
     return (
         <div className={styles.container}>
-            <PassengerChoices />
-            <div>
-                <input type="text" placeholder="from" />
-                <input type="text" placeholder="to" />
-                <input type="text" placeholder="departure" />
-                <input type="text" placeholder="return" />
+            <PassengerChoices
+                tripType={tripType}
+                setTripType={setTripType}
+                seatClass={seatClass}
+                setSeatClass={setSeatClass}
+                passengers={passengers}
+                setPassengers={setPassengers}
+            />
+            <div className={styles.inputContainer}>
+                <AutocompleteSearch
+                    options={airPortsFrom}
+                    setOptions={setAirPortsFrom}
+                    choice={userLocation}
+                    setChoice={setUserLocation}
+                    setSearch={setSearchTextFrom}
+                    label={"from"}
+                    loading={loadingFrom}
+                />
+                <AutocompleteSearch
+                    options={airPortsTo}
+                    setOptions={setAirPortsTo}
+                    choice={userDestination}
+                    setChoice={setUserDestination}
+                    setSearch={setSearchTextTo}
+                    label={"destination"}
+                    loading={loadingTo}
+                />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker label="from" />
+                </LocalizationProvider>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker label="To" />
+                </LocalizationProvider>
             </div>
-            <button>Explore</button>
+            <button onClick={() => null}>Explore</button>
         </div>
     )
 }
