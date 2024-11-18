@@ -9,7 +9,6 @@ import AutocompleteSearch from "./AutoCompleteSearch";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 
 function SearchFlight() {
     const [tripType, setTripType] = useState<TripType>("round_trip");
