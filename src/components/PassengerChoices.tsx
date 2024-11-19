@@ -43,7 +43,7 @@ const PassengerChoices = ({
             "adults": "Adults",
             "children": "Children",
             "infants_seat": "Infants",
-            "infants_lap": "Infants",
+            // "infants_lap": "Infants",
         }[type]
     }
 
@@ -52,7 +52,7 @@ const PassengerChoices = ({
             "adults": "",
             "children": "Aged 2-11",
             "infants_seat": "In seat",
-            "infants_lap": "On lap",
+            // "infants_lap": "On lap",
         }[type]
     }
 
@@ -95,7 +95,7 @@ const PassengerChoices = ({
                 >
                     <MenuItem value={"round_trip"}>Round trip</MenuItem>
                     <MenuItem value={"one_way"}>One way</MenuItem>
-                    <MenuItem value={"multi_city"}>Multi-city</MenuItem>
+                    {/* <MenuItem value={"multi_city"}>Multi-city</MenuItem> */}
                 </Select>
             </FormControl>
             <FormControl>
@@ -107,7 +107,7 @@ const PassengerChoices = ({
                     <PassengengerItemChoice type="adults" />
                     <PassengengerItemChoice type="children" />
                     <PassengengerItemChoice type="infants_seat" />
-                    <PassengengerItemChoice type="infants_lap" />
+                    {/* <PassengengerItemChoice type="infants_lap" /> */}
                 </Select>
             </FormControl>
             <FormControl>

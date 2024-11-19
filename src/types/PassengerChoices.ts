@@ -14,8 +14,8 @@ export type SeatClassType = (
 export type PassengersType = (
     "adults" |
     "children" |
-    "infants_seat" |
-    "infants_lap"
+    "infants_seat"
+    // "infants_lap"
 );
 
 export type PassengersCountType = (
@@ -23,6 +23,6 @@ export type PassengersCountType = (
         "adults": number,
         "children": number,
         "infants_seat": number,
-        "infants_lap": number
+        // "infants_lap": number
     }
 );

@@ -9,6 +9,7 @@ import AutocompleteSearch from "./AutoCompleteSearch";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from "dayjs";
 
 function SearchFlight() {
     const [tripType, setTripType] = useState<TripType>("round_trip");
@@ -17,10 +18,14 @@ function SearchFlight() {
         "adults": 1,
         "children": 0,
         "infants_seat": 0,
-        "infants_lap": 0
+        // "infants_lap": 0
     });
-    const [userLocation, setUserLocation] = useState<ILocation>();
-    const [userDestination, setUserDestination] = useState<ILocation>();
+    const [originLocation, setOriginLocation] = useState<ILocation>();
+    const [destinationLocation, setDestinationLocation] = useState<ILocation>();
+
+    const [flightDate, setFlightDate] = useState<dayjs.Dayjs | null>(null);
+    const [returnDate, setReturnDate] = useState<dayjs.Dayjs | null>(null);
+
 
     const [airPortsFrom, setAirPortsFrom] = useState<ILocation[]>([]);
     const [airPortsTo, setAirPortsTo] = useState<ILocation[]>([]);
@@ -74,8 +79,8 @@ function SearchFlight() {
                 <AutocompleteSearch
                     options={airPortsFrom}
                     setOptions={setAirPortsFrom}
-                    choice={userLocation}
-                    setChoice={setUserLocation}
+                    choice={originLocation}
+                    setChoice={setOriginLocation}
                     setSearch={setSearchTextFrom}
                     label={"from"}
                     loading={loadingFrom}
@@ -83,17 +88,17 @@ function SearchFlight() {
                 <AutocompleteSearch
                     options={airPortsTo}
                     setOptions={setAirPortsTo}
-                    choice={userDestination}
-                    setChoice={setUserDestination}
+                    choice={destinationLocation}
+                    setChoice={setDestinationLocation}
                     setSearch={setSearchTextTo}
                     label={"destination"}
                     loading={loadingTo}
                 />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker label="from" />
+                    <DatePicker label="flightDate" value={flightDate} onChange={(newDate) => setFlightDate(newDate)} />
                 </LocalizationProvider>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker label="To" />
+                    <DatePicker label="returnDate" value={returnDate} onChange={(newDate) => setReturnDate(newDate)} />
                 </LocalizationProvider>
             </div>
             <button onClick={() => null}>Explore</button>
