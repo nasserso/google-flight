@@ -10,9 +10,10 @@ interface IAutoCompleteSearch {
     setSearch: React.Dispatch<React.SetStateAction<string>>;
     label: string;
     loading: boolean;
+    required?: boolean;
 }
 
-function AutocompleteSearch({ options, setOptions, choice, setChoice, setSearch, label, loading }: IAutoCompleteSearch) {
+function AutocompleteSearch({ options, setOptions, choice, setChoice, setSearch, label, loading, required = false }: IAutoCompleteSearch) {
     return (
         <Autocomplete
             disablePortal
@@ -39,6 +40,7 @@ function AutocompleteSearch({ options, setOptions, choice, setChoice, setSearch,
                 <TextField
                     {...params}
                     label={label}
+                    required={required}
                     slotProps={{
                         input: {
                             ...params.InputProps,

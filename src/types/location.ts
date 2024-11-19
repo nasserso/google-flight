@@ -1,4 +1,6 @@
 export interface ILocation {
+    skyId: string,
+    entityId: string
     presentation: {
         title: string,
         suggestionTitle: string,

@@ -53,6 +53,24 @@ function SearchFlight() {
         }
     }
 
+    const searchFlight = async () => {
+        if (originLocation && destinationLocation && flightDate) {
+            const response = await flightApi.searchFlights(
+                originLocation?.skyId,
+                destinationLocation?.skyId,
+                originLocation?.entityId,
+                destinationLocation?.entityId,
+                flightDate?.format('YYYY-MM-DD'),
+                returnDate?.format('YYYY-MM-DD'),
+                seatClass,
+                passengers?.adults,
+                passengers?.children,
+                passengers?.infants_seat,
+            );
+            console.log(response);
+        }
+    }
+
     useEffect(() => {
         if (searchDebounceFrom.length > 0) {
             getAirPort(searchDebounceFrom, setLoadingFrom, (e) => setAirPortsFrom(e));
@@ -84,6 +102,7 @@ function SearchFlight() {
                     setSearch={setSearchTextFrom}
                     label={"from"}
                     loading={loadingFrom}
+                    required={true}
                 />
                 <AutocompleteSearch
                     options={airPortsTo}
@@ -93,6 +112,7 @@ function SearchFlight() {
                     setSearch={setSearchTextTo}
                     label={"destination"}
                     loading={loadingTo}
+                    required={true}
                 />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker label="flightDate" value={flightDate} onChange={(newDate) => setFlightDate(newDate)} />
@@ -101,7 +121,7 @@ function SearchFlight() {
                     <DatePicker label="returnDate" value={returnDate} onChange={(newDate) => setReturnDate(newDate)} />
                 </LocalizationProvider>
             </div>
-            <button onClick={() => null}>Explore</button>
+            <button onClick={() => searchFlight()}>Explore</button>
         </div>
     )
 }

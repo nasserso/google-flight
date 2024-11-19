@@ -14,5 +14,34 @@ export const flightApi = {
     searchAirport: async (query: string) => {
         const response = await flight_base.get("searchAirport", { params: { query } })
         return response;
-    }
+    },
+
+    searchFlights: async (
+        originSkyId: string,
+        destinationSkyId: string,
+        originEntityId: string,
+        destinationEntityId: string,
+        date: string,
+        returnDate?: string,
+        cabinClass?: string,
+        adults?: number,
+        children?: number,
+        infants?: number,
+    ) => {
+        const response = await flight_base.get("searchFlights", {
+            params: {
+                originSkyId,
+                destinationSkyId,
+                originEntityId,
+                destinationEntityId,
+                date,
+                returnDate,
+                cabinClass,
+                adults,
+                children,
+                infants,
+            }
+        })
+        return response;
+    },
 }
