@@ -94,32 +94,48 @@ function SearchFlight() {
                 setPassengers={setPassengers}
             />
             <div className={styles.inputContainer}>
-                <AutocompleteSearch
-                    options={airPortsFrom}
-                    setOptions={setAirPortsFrom}
-                    choice={originLocation}
-                    setChoice={setOriginLocation}
-                    setSearch={setSearchTextFrom}
-                    label={"from"}
-                    loading={loadingFrom}
-                    required={true}
-                />
-                <AutocompleteSearch
-                    options={airPortsTo}
-                    setOptions={setAirPortsTo}
-                    choice={destinationLocation}
-                    setChoice={setDestinationLocation}
-                    setSearch={setSearchTextTo}
-                    label={"destination"}
-                    loading={loadingTo}
-                    required={true}
-                />
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker label="flightDate" value={flightDate} onChange={(newDate) => setFlightDate(newDate)} />
-                </LocalizationProvider>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker label="returnDate" value={returnDate} onChange={(newDate) => setReturnDate(newDate)} />
-                </LocalizationProvider>
+                <div className={styles.inputSearch}>
+                    <AutocompleteSearch
+                        options={airPortsFrom}
+                        setOptions={setAirPortsFrom}
+                        choice={originLocation}
+                        setChoice={setOriginLocation}
+                        setSearch={setSearchTextFrom}
+                        label={"from"}
+                        loading={loadingFrom}
+                        required={true}
+                        className={styles.input}
+                    />
+                    <AutocompleteSearch
+                        options={airPortsTo}
+                        setOptions={setAirPortsTo}
+                        choice={destinationLocation}
+                        setChoice={setDestinationLocation}
+                        setSearch={setSearchTextTo}
+                        label={"destination"}
+                        loading={loadingTo}
+                        required={true}
+                        className={styles.input}
+                    />
+                </div>
+                <div className={styles.inputDate}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                            label="flightDate"
+                            value={flightDate}
+                            onChange={(newDate) => setFlightDate(newDate)}
+                            className={styles.input}
+                        />
+                    </LocalizationProvider>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                            label="returnDate"
+                            value={returnDate}
+                            onChange={(newDate) => setReturnDate(newDate)}
+                            className={styles.input}
+                        />
+                    </LocalizationProvider>
+                </div>
             </div>
             <button onClick={() => searchFlight()}>Explore</button>
         </div>

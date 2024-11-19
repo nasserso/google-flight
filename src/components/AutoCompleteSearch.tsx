@@ -13,12 +13,22 @@ interface IAutoCompleteSearch {
     required?: boolean;
 }
 
-function AutocompleteSearch({ options, setOptions, choice, setChoice, setSearch, label, loading, required = false }: IAutoCompleteSearch) {
+function AutocompleteSearch({
+    options,
+    setOptions,
+    choice,
+    setChoice,
+    setSearch,
+    label,
+    loading,
+    required = false,
+    ...data
+}: IAutoCompleteSearch) {
     return (
         <Autocomplete
+            {...data}
             disablePortal
             options={options}
-            sx={{ width: 300 }}
             getOptionLabel={(option) => option.presentation.title}
             loading={loading}
             onInputChange={(_, newInputValue) => {

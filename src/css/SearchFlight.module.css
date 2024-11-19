@@ -1,5 +1,5 @@
 .container {
-    height: 156px;
+    height: 160px;
     width: 100%;
     background-color: var(--search-component);
 }
@@ -25,4 +25,29 @@
 
 .inputContainer {
     display: flex;
+}
+
+.inputSearch {
+    display: flex;
+    width: 100%;
+}
+
+.inputDate {
+    display: flex;
+    width: 100%;
+}
+
+.input {
+    width: 100%;
+}
+
+@media only screen and (max-width: 800px) {
+    .container {
+        height: 220px;
+    }
+
+    .inputContainer {
+        display: flex;
+        flex-direction: column;
+    }
 }
