@@ -32,7 +32,6 @@ function SearchFlight() {
     const [flightDate, setFlightDate] = useState<dayjs.Dayjs | null>(null);
     const [returnDate, setReturnDate] = useState<dayjs.Dayjs | null>(null);
 
-
     const [airPortsFrom, setAirPortsFrom] = useState<ILocation[]>([]);
     const [airPortsTo, setAirPortsTo] = useState<ILocation[]>([]);
 
@@ -75,7 +74,20 @@ function SearchFlight() {
                     passengers?.children,
                     passengers?.infants_seat,
                 );
-                navigate("/search", { state: response.data })
+                navigate("/search", {
+                    state: {
+                        response: response.data,
+                        userData: {
+                            originLocation,
+                            destinationLocation,
+                            tripType,
+                            seatClass,
+                            passengers,
+                            flightDate,
+                            returnDate,
+                        }
+                    }
+                })
             } catch (e) {
                 console.log(e)
                 console.log("Could not find flight")

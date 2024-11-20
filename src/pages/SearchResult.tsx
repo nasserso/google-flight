@@ -10,23 +10,24 @@ import AutocompleteSearch from "../components/AutoCompleteSearch";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useLocation } from "react-router-dom";
+import Worldmap from "../assets/worldmap.png"
 
 function SearchResult() {
     const { state } = useLocation();
-    const { itineraries, destinationImageUrl } = state.data;
+    const { itineraries, destinationImageUrl } = state.response.data;
 
-    const [tripType, setTripType] = useState<TripType>("round_trip");
-    const [seatClass, setSeatClass] = useState<SeatClassType>("economy");
-    const [passengers, setPassengers] = useState<PassengersCountType>({
+    const [tripType, setTripType] = useState<TripType>(state.userData.tripType || "round_trip");
+    const [seatClass, setSeatClass] = useState<SeatClassType>(state.userData.seatClass || "economy");
+    const [passengers, setPassengers] = useState<PassengersCountType>(state.userData.passengers || {
         "adults": 1,
         "children": 0,
         "infants_seat": 0,
     });
-    const [originLocation, setOriginLocation] = useState<ILocation>();
-    const [destinationLocation, setDestinationLocation] = useState<ILocation>();
+    const [originLocation, setOriginLocation] = useState<ILocation>(state.userData.originLocation || null);
+    const [destinationLocation, setDestinationLocation] = useState<ILocation>(state.userData.destinationLocation || null);
 
-    const [flightDate, setFlightDate] = useState<dayjs.Dayjs | null>(null);
-    const [returnDate, setReturnDate] = useState<dayjs.Dayjs | null>(null);
+    const [flightDate, setFlightDate] = useState<dayjs.Dayjs | null>(state.userData.flightDate || null);
+    const [returnDate, setReturnDate] = useState<dayjs.Dayjs | null>(state.userData.returnDate || null);
 
 
     const [airPortsFrom, setAirPortsFrom] = useState<ILocation[]>([]);
@@ -52,24 +53,6 @@ function SearchResult() {
             setAirPorts(response.data.data || []);
         } finally {
             setLoading(false);
-        }
-    }
-
-    const searchFlight = async () => {
-        if (originLocation && destinationLocation && flightDate) {
-            const response = await flightApi.searchFlights(
-                originLocation?.skyId,
-                destinationLocation?.skyId,
-                originLocation?.entityId,
-                destinationLocation?.entityId,
-                flightDate?.format('YYYY-MM-DD'),
-                returnDate?.format('YYYY-MM-DD'),
-                seatClass,
-                passengers?.adults,
-                passengers?.children,
-                passengers?.infants_seat,
-            );
-            console.log(response);
         }
     }
 
@@ -170,6 +153,9 @@ function SearchResult() {
                     </div>
                 </div>
                 <PlaceList />
+            </div>
+            <div style={{ width: "100%", height: "100%", margin: "10px" }}>
+                <img src={Worldmap} alt="" style={{ width: "100%", height: "100%" }} />
             </div>
         </div>
     )
