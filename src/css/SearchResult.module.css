@@ -67,3 +67,34 @@
     justify-content: flex-end;
     height: 50%;
 }
+
+.worldMapContainer {
+    width: 100%;
+    height: 100%;
+    margin: 10px;
+}
+
+@media only screen and (max-width: 1700px) {
+    .menuContainer {
+        width: 550px;
+    }
+
+    .itineraryContainer {
+        height: 180px;
+    }
+
+    .priceContainer {
+        height: 40%;
+        align-items: flex-end;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .worldMapContainer {
+        display: none;
+    }
+
+    .menuContainer {
+        width: 100%;
+    }
+}

@@ -154,7 +154,7 @@ function SearchResult() {
                 </div>
                 <PlaceList />
             </div>
-            <div style={{ width: "100%", height: "100%", margin: "10px" }}>
+            <div className={styles.worldMapContainer}>
                 <img src={Worldmap} alt="" style={{ width: "100%", height: "100%" }} />
             </div>
         </div>
