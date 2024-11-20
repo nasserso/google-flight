@@ -41,6 +41,11 @@
     width: 100%;
 }
 
+.exploreContainer {
+    width: 130px;
+    height: 45px;
+}
+
 @media only screen and (max-width: 800px) {
     .container {
         height: 220px;

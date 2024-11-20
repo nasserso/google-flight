@@ -1,0 +1,67 @@
+.container {
+    width: 100vw;
+    height: 100vh;
+}
+
+.menuContainer {
+    width: 450px;
+}
+
+.leftNavBar {
+    height: 100vh;
+    overflow: scroll;
+    margin: 10px;
+}
+
+.itineraryContainer {
+    display: flex;
+    border: 1px solid black;
+
+    width: 95%;
+    height: 130px;
+
+    margin-bottom: 10px;
+    border-radius: 10px;
+
+}
+
+.itineraryInfoContainer {
+    width: 100%;
+    height: 100%;
+
+    margin: 10px
+}
+
+.itineraryImg {
+    width: 130px;
+    height: 100%;
+    border-radius: 10px 0px 0px 10px;
+}
+
+
+.infoContainer {
+    display: flex;
+    flex-direction: column;
+
+    align-items: start;
+
+    padding: 0px;
+    height: 50%;
+}
+
+.carrierContainer {
+    display: flex;
+    align-items: center;
+}
+
+.carrierImg {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.priceContainer {
+    display: flex;
+    justify-content: flex-end;
+    height: 50%;
+}

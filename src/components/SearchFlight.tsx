@@ -10,8 +10,14 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
 
 function SearchFlight() {
+    const navigate = useNavigate();
+
+    const [loading, setLoading] = useState<boolean>(false);
+
     const [tripType, setTripType] = useState<TripType>("round_trip");
     const [seatClass, setSeatClass] = useState<SeatClassType>("economy");
     const [passengers, setPassengers] = useState<PassengersCountType>({
@@ -55,19 +61,27 @@ function SearchFlight() {
 
     const searchFlight = async () => {
         if (originLocation && destinationLocation && flightDate) {
-            const response = await flightApi.searchFlights(
-                originLocation?.skyId,
-                destinationLocation?.skyId,
-                originLocation?.entityId,
-                destinationLocation?.entityId,
-                flightDate?.format('YYYY-MM-DD'),
-                returnDate?.format('YYYY-MM-DD'),
-                seatClass,
-                passengers?.adults,
-                passengers?.children,
-                passengers?.infants_seat,
-            );
-            console.log(response);
+            try {
+                setLoading(true);
+                const response = await flightApi.searchFlights(
+                    originLocation?.skyId,
+                    destinationLocation?.skyId,
+                    originLocation?.entityId,
+                    destinationLocation?.entityId,
+                    flightDate?.format('YYYY-MM-DD'),
+                    returnDate?.format('YYYY-MM-DD'),
+                    seatClass,
+                    passengers?.adults,
+                    passengers?.children,
+                    passengers?.infants_seat,
+                );
+                navigate("/search", { state: response.data })
+            } catch (e) {
+                console.log(e)
+                console.log("Could not find flight")
+            } finally {
+                setLoading(false);
+            };
         }
     }
 
@@ -137,7 +151,10 @@ function SearchFlight() {
                     </LocalizationProvider>
                 </div>
             </div>
-            <button onClick={() => searchFlight()}>Explore</button>
+            <button onClick={() => searchFlight()} className={styles.exploreContainer}>
+                {loading && <CircularProgress size="20px" sx={{ marginRight: "10px" }} />}
+                Explore
+            </button>
         </div>
     )
 }
